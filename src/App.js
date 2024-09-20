@@ -41,7 +41,6 @@ const App = () => {
       const res = await axios.get(`${API_URL}/users/getUsers`);
       if (res.status === 200) {
         setUsers(res.data);
-        
       } else {
         console.log(res.status);
       }
@@ -60,30 +59,28 @@ const App = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const hasEmptyFields = Object.values(formData).some(
-      (value) => value === '' || value === defaultFormData[value]
+      (value) => value === "" || value === defaultFormData[value]
     );
-  
+
     if (hasEmptyFields) {
-      alert('All fields are required');
+      alert("All fields are required");
       return;
     }
-  
+
     try {
       const res = await axios.post(`${API_URL}/users/createUser`, { formData });
       if (res.status === 200) {
-        alert('User created successfully');
+        alert("User created successfully");
         getUsersDetails();
         setOpen(false);
       }
     } catch (e) {
-      alert('Something went wrong');
+      alert("Something went wrong");
       console.error(e);
     }
   };
-
-  
 
   const userKeys = Object.keys(users.length > 0 ? users[0] : {}).filter(
     (key) => key !== "_id" && key !== "__v"
