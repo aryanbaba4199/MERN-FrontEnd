@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "./Api";
 import axios from "axios";
-import { IoMdDoneAll } from "react-icons/io";
 
 import {
   TableContainer,
@@ -18,7 +17,6 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
-  Alert,
 } from "@mui/material";
 
 const defaultFormData = {
@@ -181,7 +179,12 @@ const Users = () => {
               onChange={handleChange}
             />
           </FormControl>
-          <Box display={"flex"} justifyContent={"center"} marginTop={3}>
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            marginTop={3}
+            marginBottom={5}
+          >
             <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>
