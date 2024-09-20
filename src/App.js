@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "./Api";
 import axios from "axios";
+import { IoMdDoneAll } from "react-icons/io";
+
 import {
   TableContainer,
   Table,
@@ -16,6 +18,7 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
+  Alert,
 } from "@mui/material";
 
 const defaultFormData = {
@@ -38,6 +41,7 @@ const App = () => {
       const res = await axios.get(`${API_URL}/users/getUsers`);
       if (res.status === 200) {
         setUsers(res.data);
+        
       } else {
         console.log(res.status);
       }
@@ -54,10 +58,32 @@ const App = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+  
+    const hasEmptyFields = Object.values(formData).some(
+      (value) => value === '' || value === defaultFormData[value]
+    );
+  
+    if (hasEmptyFields) {
+      alert('All fields are required');
+      return;
+    }
+  
+    try {
+      const res = await axios.post(`${API_URL}/users/createUser`, { formData });
+      if (res.status === 200) {
+        alert('User created successfully');
+        getUsersDetails();
+        setOpen(false);
+      }
+    } catch (e) {
+      alert('Something went wrong');
+      console.error(e);
+    }
   };
+
+  
 
   const userKeys = Object.keys(users.length > 0 ? users[0] : {}).filter(
     (key) => key !== "_id" && key !== "__v"
@@ -129,6 +155,7 @@ const App = () => {
               id="name"
               name="name"
               label="Name"
+              required
               value={formData.name}
               onChange={handleChange}
             />
@@ -140,6 +167,7 @@ const App = () => {
               name="email"
               type="email"
               label="Email"
+              required
               value={formData.email}
               onChange={handleChange}
             />
@@ -152,6 +180,7 @@ const App = () => {
               type="number"
               label="Age"
               value={formData.age}
+              required
               onChange={handleChange}
             />
           </FormControl>
